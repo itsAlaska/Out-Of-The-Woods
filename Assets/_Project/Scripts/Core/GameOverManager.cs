@@ -4,7 +4,10 @@ using UnityEngine.SceneManagement;
 public class GameOverManager : MonoBehaviour
 {
     [Header("UI")]
-    public GameObject gameOverScreen;
+    [SerializeField] private GameObject gameOverScreen;
+
+    [Header("External Effects")]
+    [SerializeField] private CorruptionEffect corruptionEffect;
 
     private bool isGameOver = false;
 
@@ -14,11 +17,14 @@ public class GameOverManager : MonoBehaviour
 
         isGameOver = true;
         Debug.Log("Game Over triggered");
-        
+
         if (gameOverScreen != null)
             gameOverScreen.SetActive(true);
 
-        Time.timeScale = 0f; // Freeze time
+        Time.timeScale = 0f;
+
+        if (corruptionEffect != null)
+            corruptionEffect.LockCorruptionToMax();
     }
 
     public void RestartGame()
