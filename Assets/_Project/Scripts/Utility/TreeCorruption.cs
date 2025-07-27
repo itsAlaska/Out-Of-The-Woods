@@ -5,8 +5,8 @@ public class TreeCorruption : MonoBehaviour
 {
     [Header("Corruption Settings")]
     [SerializeField] private float minTime = 60f;
-    [SerializeField] private float maxTime = 540f;
-    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private float maxTime = 270f;
+    [SerializeField] private float fadeDuration = 5f;
 
     private SpriteRenderer originalRenderer;
     private SpriteRenderer corruptedRenderer;

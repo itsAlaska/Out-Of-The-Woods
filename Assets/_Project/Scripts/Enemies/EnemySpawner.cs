@@ -57,31 +57,31 @@ public class EnemySpawner : MonoBehaviour
     {
         activeEnemies.Clear();
 
-        if (time < 90f)
+        if (time < 30f)
         {
             activeEnemies.Add(bugPrefab);
+        }
+        else if (time < 90f)
+        {
+            activeEnemies.Add(bugPrefab);
+            activeEnemies.Add(birdPrefab);
         }
         else if (time < 180f)
         {
-            activeEnemies.Add(bugPrefab);
-            activeEnemies.Add(birdPrefab);
-        }
-        else if (time < 300f)
-        {
             activeEnemies.Add(corruptedBugPrefab);
             activeEnemies.Add(birdPrefab);
         }
-        else if (time < 420f)
+        else if (time < 240f)
         {
             activeEnemies.Add(corruptedBugPrefab);
-            activeEnemies.Add(birdPrefab);
             activeEnemies.Add(corruptedBirdPrefab);
         }
-        else if (time < 540f)
+        else
         {
             activeEnemies.Add(corruptedBugPrefab);
             activeEnemies.Add(corruptedBirdPrefab);
             activeEnemies.Add(squirrelPrefab);
         }
     }
+
 }
