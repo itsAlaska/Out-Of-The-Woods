@@ -8,8 +8,7 @@ public class PlayerHealth : MonoBehaviour
 
     private int currentHealth;
 
-    [Header("Events")]
-    public UnityEvent onDeath;
+    [Header("Events")] public UnityEvent onDeath;
     public UnityEvent onDamageTaken;
 
     private void Awake()
@@ -27,10 +26,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         onDamageTaken?.Invoke();
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        if (currentHealth <= 0) Die();
     }
 
     private void Die()
@@ -39,8 +35,15 @@ public class PlayerHealth : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public int GetCurrentHealth() => currentHealth;
-    public int GetMaxHealth() => Mathf.RoundToInt(stats.maxHealth);
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public int GetMaxHealth()
+    {
+        return Mathf.RoundToInt(stats.maxHealth);
+    }
 
     // Optional: Add healing logic
     public void Heal(int amount)

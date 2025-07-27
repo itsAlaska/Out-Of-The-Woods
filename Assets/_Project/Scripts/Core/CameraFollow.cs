@@ -10,10 +10,10 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null) return;
 
-        Vector3 targetPosition = target.position;
+        var targetPosition = target.position;
         targetPosition.z = transform.position.z;
 
-        float unitsPerPixel = 1f / pixelsPerUnit;
+        var unitsPerPixel = 1f / pixelsPerUnit;
         targetPosition.x = Mathf.Round(targetPosition.x / unitsPerPixel) * unitsPerPixel;
         targetPosition.y = Mathf.Round(targetPosition.y / unitsPerPixel) * unitsPerPixel;
 

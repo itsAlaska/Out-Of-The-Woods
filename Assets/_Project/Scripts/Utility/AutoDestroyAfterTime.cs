@@ -11,9 +11,6 @@ public class AutoDestroyAfterTime : MonoBehaviour
 
     private void Update()
     {
-        if (ps != null && !ps.IsAlive())
-        {
-            Destroy(gameObject);
-        }
+        if (ps != null && !ps.IsAlive()) Destroy(gameObject);
     }
 }

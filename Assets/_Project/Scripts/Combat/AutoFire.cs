@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class AutoFire : MonoBehaviour
 {
-    [Header("Firing")]
-    [SerializeField] private GameObject projectilePrefab;
+    [Header("Firing")] [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform firePoint;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private LayerMask enemyLayers;
@@ -14,7 +13,7 @@ public class AutoFire : MonoBehaviour
     {
         playerStats = GetComponent<PlayerStats>();
     }
-    
+
     private void Update()
     {
         fireTimer += Time.deltaTime;
@@ -27,14 +26,14 @@ public class AutoFire : MonoBehaviour
 
     private void FireAtNearestEnemy()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, playerStats.fireRadius, enemyLayers);
+        var hits = Physics2D.OverlapCircleAll(transform.position, playerStats.fireRadius, enemyLayers);
 
         Transform closestEnemy = null;
-        float closestDistance = Mathf.Infinity;
+        var closestDistance = Mathf.Infinity;
 
-        foreach (Collider2D hit in hits)
+        foreach (var hit in hits)
         {
-            float dist = Vector2.Distance(transform.position, hit.transform.position);
+            var dist = Vector2.Distance(transform.position, hit.transform.position);
             if (dist < closestDistance)
             {
                 closestDistance = dist;
@@ -46,8 +45,8 @@ public class AutoFire : MonoBehaviour
 
         Vector2 direction = (closestEnemy.position - firePoint.position).normalized;
 
-        GameObject projectileGO = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        Projectile projectile = projectileGO.GetComponent<Projectile>();
+        var projectileGO = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        var projectile = projectileGO.GetComponent<Projectile>();
 
         if (projectile != null)
         {
@@ -56,7 +55,6 @@ public class AutoFire : MonoBehaviour
             projectile.Speed = playerStats.projectileSpeed;
         }
     }
-
 
 
     private void OnDrawGizmosSelected()

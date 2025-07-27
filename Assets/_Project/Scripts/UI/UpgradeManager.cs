@@ -18,11 +18,11 @@ public class UpgradeManager : MonoBehaviour
     public void ShowUpgradeChoices()
     {
         Time.timeScale = 0f;
-        GameOverManager.SetExternalPause(true); 
+        GameOverManager.SetExternalPause(true);
         upgradePanel.SetActive(true);
 
         // Randomly pick upgrades
-        List<UpgradeData> choices = new List<UpgradeData>();
+        var choices = new List<UpgradeData>();
         while (choices.Count < upgradeCards.Length)
         {
             var candidate = allUpgrades[Random.Range(0, allUpgrades.Count)];
@@ -31,10 +31,7 @@ public class UpgradeManager : MonoBehaviour
         }
 
         // Assign data to each card
-        for (int i = 0; i < upgradeCards.Length; i++)
-        {
-            upgradeCards[i].Setup(choices[i], this);
-        }
+        for (var i = 0; i < upgradeCards.Length; i++) upgradeCards[i].Setup(choices[i], this);
     }
 
     public void SelectUpgrade(UpgradeData data)
@@ -43,17 +40,16 @@ public class UpgradeManager : MonoBehaviour
 
         if (data.statToModify == "Health")
         {
-            PlayerHealth health = playerStats.GetComponent<PlayerHealth>();
+            var health = playerStats.GetComponent<PlayerHealth>();
             if (health != null)
             {
-                int healAmount = Mathf.RoundToInt(health.GetMaxHealth());
+                var healAmount = Mathf.RoundToInt(health.GetMaxHealth());
                 health.Heal(healAmount);
             }
         }
 
         upgradePanel.SetActive(false);
-        GameOverManager.SetExternalPause(false); 
+        GameOverManager.SetExternalPause(false);
         Time.timeScale = 1f;
     }
-
 }

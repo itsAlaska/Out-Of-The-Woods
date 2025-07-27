@@ -9,7 +9,7 @@ public class XPBarUI : MonoBehaviour
     private void Start()
     {
         xpManager = FindObjectOfType<XPManager>();
-        if (xpManager == null) 
+        if (xpManager == null)
         {
             Debug.LogWarning("No XPManager found in scene.");
             enabled = false;

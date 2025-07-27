@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class TreeCorruption : MonoBehaviour
 {
-    [Header("Corruption Settings")]
-    [SerializeField] private float minTime = 60f;
+    [Header("Corruption Settings")] [SerializeField]
+    private float minTime = 60f;
+
     [SerializeField] private float maxTime = 270f;
     [SerializeField] private float fadeDuration = 5f;
 
@@ -19,7 +20,7 @@ public class TreeCorruption : MonoBehaviour
         // Ensure corrupted sprite starts transparent
         corruptedRenderer.color = new Color(1f, 1f, 1f, 0f);
 
-        float delay = Random.Range(minTime, maxTime);
+        var delay = Random.Range(minTime, maxTime);
         StartCoroutine(CrossfadeSprites(delay));
     }
 
@@ -27,11 +28,11 @@ public class TreeCorruption : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        float elapsed = 0f;
+        var elapsed = 0f;
 
         while (elapsed < fadeDuration)
         {
-            float t = elapsed / fadeDuration;
+            var t = elapsed / fadeDuration;
             originalRenderer.color = new Color(1f, 1f, 1f, 1f - t);
             corruptedRenderer.color = new Color(1f, 1f, 1f, t);
 

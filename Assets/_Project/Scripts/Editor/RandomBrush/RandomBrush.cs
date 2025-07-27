@@ -10,7 +10,8 @@ namespace UnityEditor.Tilemaps
     /// This Brush helps to place random Tiles onto a Tilemap.
     /// Use this as an example to create brushes which store specific data per brush and to make brushes which randomize behaviour.
     /// </summary>
-    [HelpURL("https://docs.unity3d.com/Packages/com.unity.2d.tilemap.extras@latest/index.html?subfolder=/manual/RandomBrush.html")]
+    [HelpURL(
+        "https://docs.unity3d.com/Packages/com.unity.2d.tilemap.extras@latest/index.html?subfolder=/manual/RandomBrush.html")]
     [CustomGridBrush(false, false, false, "Random Brush")]
     public class RandomBrush : GridBrush
     {
@@ -50,6 +51,7 @@ namespace UnityEditor.Tilemaps
                             return false;
                     }
                 }
+
                 return true;
             }
 
@@ -59,11 +61,13 @@ namespace UnityEditor.Tilemaps
                 _current.x -= _delta.x;
             }
 
-            public Vector3Int Current { get { return _current; } }
+            public Vector3Int Current => _current;
 
-            object IEnumerator.Current { get { return Current; } }
+            object IEnumerator.Current => Current;
 
-            void IDisposable.Dispose() {}
+            void IDisposable.Dispose()
+            {
+            }
         }
 
         /// <summary>
@@ -115,11 +119,11 @@ namespace UnityEditor.Tilemaps
                 var tilemap = brushTarget.GetComponent<Tilemap>();
                 if (tilemap == null)
                     return;
-                
-                Vector3Int min = position - pivot;
+
+                var min = position - pivot;
                 foreach (var startLocation in new SizeEnumerator(min, min + size, randomTileSetSize))
                 {
-                    var randomTileSet = randomTileSets[(int) (randomTileSets.Length * UnityEngine.Random.value)];
+                    var randomTileSet = randomTileSets[(int)(randomTileSets.Length * UnityEngine.Random.value)];
                     var randomBounds = new BoundsInt(startLocation, randomTileSetSize);
                     tilemap.SetTilesBlock(randomBounds, randomTileSet.randomTiles);
                 }
@@ -144,12 +148,12 @@ namespace UnityEditor.Tilemaps
             if (!pickRandomTiles)
                 return;
 
-            Tilemap tilemap = brushTarget.GetComponent<Tilemap>();
+            var tilemap = brushTarget.GetComponent<Tilemap>();
             if (tilemap == null)
                 return;
 
-            int i = 0;
-            int count = ((bounds.size.x + randomTileSetSize.x - 1) / randomTileSetSize.x)
+            var i = 0;
+            var count = (bounds.size.x + randomTileSetSize.x - 1) / randomTileSetSize.x
                         * ((bounds.size.y + randomTileSetSize.y - 1) / randomTileSetSize.y)
                         * ((bounds.size.z + randomTileSetSize.z - 1) / randomTileSetSize.z);
             if (addToRandomTiles)
@@ -157,20 +161,23 @@ namespace UnityEditor.Tilemaps
                 i = randomTileSets != null ? randomTileSets.Length : 0;
                 count += i;
             }
+
             Array.Resize(ref randomTileSets, count);
 
             foreach (var startLocation in new SizeEnumerator(bounds.min, bounds.max, randomTileSetSize))
             {
-                randomTileSets[i].randomTiles = new TileBase[randomTileSetSize.x * randomTileSetSize.y * randomTileSetSize.z];
+                randomTileSets[i].randomTiles =
+                    new TileBase[randomTileSetSize.x * randomTileSetSize.y * randomTileSetSize.z];
                 var randomBounds = new BoundsInt(startLocation, randomTileSetSize);
-                int j = 0;
-                foreach (Vector3Int pos in randomBounds.allPositionsWithin)
+                var j = 0;
+                foreach (var pos in randomBounds.allPositionsWithin)
                 {
-                    var tile = (pos.x < bounds.max.x && pos.y < bounds.max.y && pos.z < bounds.max.z)
+                    var tile = pos.x < bounds.max.x && pos.y < bounds.max.y && pos.z < bounds.max.z
                         ? tilemap.GetTile(pos)
                         : null;
                     randomTileSets[i].randomTiles[j++] = tile;
                 }
+
                 i++;
             }
         }
@@ -182,7 +189,7 @@ namespace UnityEditor.Tilemaps
     [CustomEditor(typeof(RandomBrush))]
     public class RandomBrushEditor : GridBrushEditor
     {
-        private RandomBrush randomBrush { get { return target as RandomBrush; } }
+        private RandomBrush randomBrush => target as RandomBrush;
         private GameObject lastBrushTarget;
 
         /// <summary>
@@ -204,17 +211,18 @@ namespace UnityEditor.Tilemaps
                 if (tilemap == null)
                     return;
 
-                Vector3Int min = position - randomBrush.pivot;
-                foreach (var startLocation in new RandomBrush.SizeEnumerator(min, min + randomBrush.size, randomBrush.randomTileSetSize))
+                var min = position - randomBrush.pivot;
+                foreach (var startLocation in new RandomBrush.SizeEnumerator(min, min + randomBrush.size,
+                             randomBrush.randomTileSetSize))
                 {
-                    var randomTileSet = randomBrush.randomTileSets[(int) (randomBrush.randomTileSets.Length * UnityEngine.Random.value)];
+                    var randomTileSet =
+                        randomBrush.randomTileSets[(int)(randomBrush.randomTileSets.Length * UnityEngine.Random.value)];
                     var randomBounds = new BoundsInt(startLocation, randomBrush.randomTileSetSize);
-                    int j = 0;
-                    foreach (Vector3Int pos in randomBounds.allPositionsWithin)
-                    {
+                    var j = 0;
+                    foreach (var pos in randomBounds.allPositionsWithin)
                         tilemap.SetEditorPreviewTile(pos, randomTileSet.randomTiles[j++]);
-                    }
                 }
+
                 lastBrushTarget = brushTarget;
             }
             else
@@ -233,9 +241,9 @@ namespace UnityEditor.Tilemaps
                 var tilemap = lastBrushTarget.GetComponent<Tilemap>();
                 if (tilemap == null)
                     return;
-                
+
                 tilemap.ClearAllEditorPreviewTiles();
-                
+
                 lastBrushTarget = null;
             }
             else
@@ -254,29 +262,31 @@ namespace UnityEditor.Tilemaps
             randomBrush.pickRandomTiles = EditorGUILayout.Toggle("Pick Random Tiles", randomBrush.pickRandomTiles);
             using (new EditorGUI.DisabledScope(!randomBrush.pickRandomTiles))
             {
-                randomBrush.addToRandomTiles = EditorGUILayout.Toggle("Add To Random Tiles", randomBrush.addToRandomTiles);
+                randomBrush.addToRandomTiles =
+                    EditorGUILayout.Toggle("Add To Random Tiles", randomBrush.addToRandomTiles);
             }
 
             EditorGUI.BeginChangeCheck();
-            randomBrush.randomTileSetSize = EditorGUILayout.Vector3IntField("Tile Set Size", randomBrush.randomTileSetSize);
+            randomBrush.randomTileSetSize =
+                EditorGUILayout.Vector3IntField("Tile Set Size", randomBrush.randomTileSetSize);
             if (EditorGUI.EndChangeCheck())
-            {
-                for (int i = 0; i < randomBrush.randomTileSets.Length; ++i)
+                for (var i = 0; i < randomBrush.randomTileSets.Length; ++i)
                 {
-                    int sizeCount = randomBrush.randomTileSetSize.x * randomBrush.randomTileSetSize.y *
+                    var sizeCount = randomBrush.randomTileSetSize.x * randomBrush.randomTileSetSize.y *
                                     randomBrush.randomTileSetSize.z;
                     randomBrush.randomTileSets[i].randomTiles = new TileBase[sizeCount];
                 }
-            }
-            int randomTileSetCount = EditorGUILayout.DelayedIntField("Number of Tiles", randomBrush.randomTileSets != null ? randomBrush.randomTileSets.Length : 0);
+
+            var randomTileSetCount = EditorGUILayout.DelayedIntField("Number of Tiles",
+                randomBrush.randomTileSets != null ? randomBrush.randomTileSets.Length : 0);
             if (randomTileSetCount < 0)
                 randomTileSetCount = 0;
             if (randomBrush.randomTileSets == null || randomBrush.randomTileSets.Length != randomTileSetCount)
             {
                 Array.Resize(ref randomBrush.randomTileSets, randomTileSetCount);
-                for (int i = 0; i < randomBrush.randomTileSets.Length; ++i)
+                for (var i = 0; i < randomBrush.randomTileSets.Length; ++i)
                 {
-                    int sizeCount = randomBrush.randomTileSetSize.x * randomBrush.randomTileSetSize.y *
+                    var sizeCount = randomBrush.randomTileSetSize.x * randomBrush.randomTileSetSize.y *
                                     randomBrush.randomTileSetSize.z;
                     if (randomBrush.randomTileSets[i].randomTiles == null
                         || randomBrush.randomTileSets[i].randomTiles.Length != sizeCount)
@@ -289,13 +299,13 @@ namespace UnityEditor.Tilemaps
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Place random tiles.");
 
-                for (int i = 0; i < randomTileSetCount; i++)
+                for (var i = 0; i < randomTileSetCount; i++)
                 {
-                    EditorGUILayout.LabelField("Tile Set " + (i+1));
-                    for (int j = 0; j < randomBrush.randomTileSets[i].randomTiles.Length; ++j)
-                    {
-                        randomBrush.randomTileSets[i].randomTiles[j] = (TileBase) EditorGUILayout.ObjectField("Tile " + (j+1), randomBrush.randomTileSets[i].randomTiles[j], typeof(TileBase), false, null);                        
-                    }
+                    EditorGUILayout.LabelField("Tile Set " + (i + 1));
+                    for (var j = 0; j < randomBrush.randomTileSets[i].randomTiles.Length; ++j)
+                        randomBrush.randomTileSets[i].randomTiles[j] = (TileBase)EditorGUILayout.ObjectField(
+                            "Tile " + (j + 1), randomBrush.randomTileSets[i].randomTiles[j], typeof(TileBase), false,
+                            null);
                 }
             }
 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Spawn Settings")]
-    [SerializeField] private GameObject bugPrefab;
+    [Header("Spawn Settings")] [SerializeField]
+    private GameObject bugPrefab;
+
     [SerializeField] private GameObject birdPrefab;
     [SerializeField] private GameObject corruptedBugPrefab;
     [SerializeField] private GameObject corruptedBirdPrefab;
@@ -17,11 +18,11 @@ public class EnemySpawner : MonoBehaviour
     private float timer;
     private float gameTimer;
 
-    private List<GameObject> activeEnemies = new List<GameObject>();
+    private List<GameObject> activeEnemies = new();
 
     private void Start()
     {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             player = playerObj.transform;
 
@@ -48,8 +49,8 @@ public class EnemySpawner : MonoBehaviour
     {
         if (activeEnemies.Count == 0) return;
 
-        int index = Random.Range(0, activeEnemies.Count);
-        Vector2 spawnPosition = (Vector2)player.position + Random.insideUnitCircle.normalized * spawnRadius;
+        var index = Random.Range(0, activeEnemies.Count);
+        var spawnPosition = (Vector2)player.position + Random.insideUnitCircle.normalized * spawnRadius;
         Instantiate(activeEnemies[index], spawnPosition, Quaternion.identity);
     }
 
@@ -83,5 +84,4 @@ public class EnemySpawner : MonoBehaviour
             activeEnemies.Add(squirrelPrefab);
         }
     }
-
 }

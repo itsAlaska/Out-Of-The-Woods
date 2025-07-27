@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
 
     public float Speed { get; set; }
     public int Damage { get; set; }
-    
+
     private PlayerStats playerStats;
     private Vector2 direction;
 
@@ -33,18 +33,17 @@ public class Projectile : MonoBehaviour
     {
         if (((1 << collision.gameObject.layer) & targetLayers) != 0)
         {
-            Enemy enemy = collision.GetComponent<Enemy>();
+            var enemy = collision.GetComponent<Enemy>();
             if (enemy != null)
             {
                 Debug.Log("Damaging enemy.");
                 enemy.TakeDamage(Damage);
             }
 
-            ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
+            var ps = GetComponentInChildren<ParticleSystem>();
             ps.transform.parent = null;
             ps.Stop();
             Destroy(gameObject);
         }
     }
-
 }

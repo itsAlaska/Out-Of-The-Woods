@@ -4,8 +4,9 @@ using TMPro;
 
 public class UpgradeCardUI : MonoBehaviour
 {
-    [Header("UI References")]
-    [SerializeField] private Image icon;
+    [Header("UI References")] [SerializeField]
+    private Image icon;
+
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descriptionText;
 
@@ -27,9 +28,6 @@ public class UpgradeCardUI : MonoBehaviour
 
     public void OnSelect()
     {
-        if (upgradeData != null && manager != null)
-        {
-            manager.SelectUpgrade(upgradeData);
-        }
+        if (upgradeData != null && manager != null) manager.SelectUpgrade(upgradeData);
     }
 }

@@ -3,11 +3,11 @@ using TMPro;
 
 public class GameTimer : MonoBehaviour
 {
-    [Header("UI Reference")]
-    [SerializeField] private TextMeshProUGUI timerText;
+    [Header("UI Reference")] [SerializeField]
+    private TextMeshProUGUI timerText;
 
-    [Header("Timer Settings")]
-    [SerializeField] private float maxTime = 300f;
+    [Header("Timer Settings")] [SerializeField]
+    private float maxTime = 300f;
 
     [SerializeField] private GameOverManager gameOverManager;
     [SerializeField] private LayeredMusicManager musicManager;
@@ -24,8 +24,8 @@ public class GameTimer : MonoBehaviour
         ElapsedTime += Time.deltaTime;
         ElapsedTime = Mathf.Min(ElapsedTime, maxTime);
 
-        int minutes = Mathf.FloorToInt(ElapsedTime / 60f);
-        int seconds = Mathf.FloorToInt(ElapsedTime % 60f);
+        var minutes = Mathf.FloorToInt(ElapsedTime / 60f);
+        var seconds = Mathf.FloorToInt(ElapsedTime % 60f);
 
         if (timerText != null)
             timerText.text = $"{minutes:00}:{seconds:00}";

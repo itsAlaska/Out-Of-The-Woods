@@ -229,5 +229,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minTime: 60
-  maxTime: 540
+  maxTime: 270
   fadeDuration: 5

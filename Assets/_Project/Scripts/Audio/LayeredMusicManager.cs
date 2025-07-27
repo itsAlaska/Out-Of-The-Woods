@@ -4,14 +4,15 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class LayeredMusicManager : MonoBehaviour
 {
-    [Header("Audio Clips")]
-    [SerializeField] private AudioClip mainTheme;
+    [Header("Audio Clips")] [SerializeField]
+    private AudioClip mainTheme;
+
     [SerializeField] private AudioClip corruptedTheme;
     [SerializeField] private AudioClip hospitalBeep;
     [SerializeField] private AudioClip flatline;
 
-    [Header("Fade Settings")]
-    [SerializeField] private float fadeOutSpeed = 0.5f;
+    [Header("Fade Settings")] [SerializeField]
+    private float fadeOutSpeed = 0.5f;
 
     private AudioSource mainSource;
     private AudioSource corruptedSource;
@@ -33,7 +34,7 @@ public class LayeredMusicManager : MonoBehaviour
         corruptedSource.clip = corruptedTheme;
 
         // Initial volumes
-        mainSource.volume = 1f;
+        mainSource.volume = .5f;
         corruptedSource.volume = 0f;
 
         // Start music
@@ -44,38 +45,38 @@ public class LayeredMusicManager : MonoBehaviour
     // Gradually blend from main to corrupted based on corruption % (0 to 1)
     public void SetCorruptionProgress(float timeElapsed)
     {
-        float mainVolume = 0f;
-        float corruptedVolume = 0f;
-        float beepVolume = 0f;
+        var mainVolume = 0f;
+        var corruptedVolume = 0f;
+        var beepVolume = 0f;
 
         if (timeElapsed < 90f)
         {
-            // 0:00–1:30
-            mainVolume = 1f;
+            mainVolume = .5f;
         }
         else if (timeElapsed < 270f)
         {
-            // 1:30–4:30
-            float t = Mathf.InverseLerp(90f, 270f, timeElapsed);
-            mainVolume = Mathf.Lerp(1f, 0f, t);
+            var t = Mathf.InverseLerp(90f, 270f, timeElapsed);
+            var fadeT = Mathf.Pow(t, 2.5f);
+
+            mainVolume = Mathf.Lerp(0.5f, 0f, fadeT);
             corruptedVolume = Mathf.Lerp(0f, 1f, t);
         }
         else if (timeElapsed < 300f)
         {
-            // 4:30–5:00
-            float t = Mathf.InverseLerp(270f, 300f, timeElapsed);
+            var t = Mathf.InverseLerp(270f, 300f, timeElapsed);
             corruptedVolume = Mathf.Lerp(1f, 0f, t);
             beepVolume = Mathf.Lerp(0f, 0.5f, t);
         }
         else
         {
-            // After 5:00
             beepVolume = 0f;
         }
 
         mainSource.volume = mainVolume;
         corruptedSource.volume = corruptedVolume;
         sfxSource.volume = beepVolume;
+
+        Debug.Log($"Main Volume Set To: {mainVolume} at timeElapsed: {timeElapsed}");
     }
 
 
@@ -94,7 +95,7 @@ public class LayeredMusicManager : MonoBehaviour
         StartCoroutine(FadeOutSource(mainSource));
         StartCoroutine(FadeOutSource(corruptedSource));
     }
-    
+
     public void SetHospitalBeepVolume(float t)
     {
         if (sfxSource.clip != hospitalBeep)
@@ -109,7 +110,7 @@ public class LayeredMusicManager : MonoBehaviour
 
     private IEnumerator FadeOutSource(AudioSource source)
     {
-        float startVolume = source.volume;
+        var startVolume = source.volume;
 
         while (source.volume > 0f)
         {
@@ -121,4 +122,26 @@ public class LayeredMusicManager : MonoBehaviour
         source.Stop();
         source.volume = startVolume; // Reset for future reuse if needed
     }
+    
+    public void FadeOutFlatline(float duration)
+    {
+        StartCoroutine(FadeOutSFXOverTime(duration));
+    }
+
+    private IEnumerator FadeOutSFXOverTime(float duration)
+    {
+        float startVolume = sfxSource.volume;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            sfxSource.volume = Mathf.Lerp(startVolume, 0f, timer / duration);
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        sfxSource.volume = 0f;
+        sfxSource.Stop(); // Optional
+    }
+
 }

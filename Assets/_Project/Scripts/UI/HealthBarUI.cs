@@ -9,7 +9,7 @@ public class HealthBarUI : MonoBehaviour
     private void Start()
     {
         playerHealth = FindObjectOfType<PlayerHealth>();
-        if (playerHealth == null) 
+        if (playerHealth == null)
         {
             Debug.LogWarning("No PlayerHealth found in scene.");
             enabled = false;

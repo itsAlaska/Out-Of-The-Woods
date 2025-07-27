@@ -14,12 +14,11 @@ public class PickupCollector : MonoBehaviour
 
     private void Update()
     {
-        float range = playerStats != null ? playerStats.pickupRange : 2f;
+        var range = playerStats != null ? playerStats.pickupRange : 2f;
 
-        Collider2D[] pickups = Physics2D.OverlapCircleAll(transform.position, range, pickupLayer);
+        var pickups = Physics2D.OverlapCircleAll(transform.position, range, pickupLayer);
 
-        foreach (Collider2D pickup in pickups)
-        {
+        foreach (var pickup in pickups)
             if (pickup.TryGetComponent<Rigidbody2D>(out var rb))
             {
                 Vector2 direction = (transform.position - pickup.transform.position).normalized;
@@ -33,12 +32,11 @@ public class PickupCollector : MonoBehaviour
                     moveSpeed * Time.deltaTime
                 );
             }
-        }
     }
 
     private void OnDrawGizmosSelected()
     {
-        float range = playerStats != null ? playerStats.pickupRange : 2f;
+        var range = playerStats != null ? playerStats.pickupRange : 2f;
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
     }
