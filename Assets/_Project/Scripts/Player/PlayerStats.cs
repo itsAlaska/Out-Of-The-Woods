@@ -17,7 +17,9 @@ public class PlayerStats : MonoBehaviour
             case "Health": maxHealth += value; break;
             case "MoveSpeed": moveSpeed += value; break;
             case "Damage": projectileDamage += value; break;
+            case "Velocity": projectileSpeed += value; break;
             case "FireRate": fireRate -= value; break; // lower = faster
+            case "FireRadius": fireRadius += value; break;
             case "PickupRange": pickupRange += value; break;
             // Add more as needed
         }

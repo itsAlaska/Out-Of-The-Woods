@@ -29,7 +29,6 @@ public class AutoFire : MonoBehaviour
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, playerStats.fireRadius, enemyLayers);
 
-
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;
 
@@ -43,13 +42,21 @@ public class AutoFire : MonoBehaviour
             }
         }
 
-        if (closestEnemy == null) return; // ✅ No enemy? Don't fire.
+        if (closestEnemy == null) return;
 
         Vector2 direction = (closestEnemy.position - firePoint.position).normalized;
 
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        projectile.GetComponent<Rigidbody2D>().velocity = direction * 10f; // Adjust speed as needed
+        GameObject projectileGO = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        Projectile projectile = projectileGO.GetComponent<Projectile>();
+
+        if (projectile != null)
+        {
+            projectile.SetDirection(direction);
+            projectile.Damage = Mathf.RoundToInt(playerStats.projectileDamage);
+            projectile.Speed = playerStats.projectileSpeed;
+        }
     }
+
 
 
     private void OnDrawGizmosSelected()

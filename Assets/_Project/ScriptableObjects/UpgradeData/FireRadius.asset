@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48940f4a8a09b244f8db75e11c024cd7, type: 3}
+  m_Name: FireRadius
+  m_EditorClassIdentifier: 
+  upgradeName: Attack Range!
+  description: Throw the acrons further!
+  icon: {fileID: 21300000, guid: b07d82fac7fd74e469a2f206584d757a, type: 3}
+  statToModify: FireRadius
+  value: 1

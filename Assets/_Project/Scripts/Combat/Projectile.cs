@@ -7,6 +7,10 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float lifetime = 2f;
     [SerializeField] private LayerMask targetLayers;
 
+    public float Speed { get; set; }
+    public int Damage { get; set; }
+    
+    private PlayerStats playerStats;
     private Vector2 direction;
 
     private void Start()
@@ -21,8 +25,9 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.Translate(direction * speed * Time.fixedDeltaTime);
+        transform.Translate(direction * Speed * Time.fixedDeltaTime);
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -32,8 +37,9 @@ public class Projectile : MonoBehaviour
             if (enemy != null)
             {
                 Debug.Log("Damaging enemy.");
-                enemy.TakeDamage(1);
+                enemy.TakeDamage(Damage);
             }
+
             ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
             ps.transform.parent = null;
             ps.Stop();

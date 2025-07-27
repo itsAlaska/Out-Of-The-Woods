@@ -28,8 +28,14 @@ public class XPManager : MonoBehaviour
 
     private void LevelUp()
     {
+        if (!FindObjectOfType<UpgradeManager>())
+            Debug.LogWarning("No UpgradeManager found in scene!");
+        
         level++;
         xpToNextLevel = Mathf.RoundToInt(xpToNextLevel * xpGrowthFactor);
         Debug.Log($"Level Up! Now level {level}");
+
+        FindObjectOfType<UpgradeManager>()?.ShowUpgradeChoices();
     }
+
 }
