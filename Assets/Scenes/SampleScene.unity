@@ -1310,6 +1310,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverScreen: {fileID: 1819301482}
   corruptionEffect: {fileID: 1719975256}
+  musicManager: {fileID: 0}
+  gameTimer: {fileID: 0}
 --- !u!224 &205994816
 RectTransform:
   m_ObjectHideFlags: 0
@@ -51918,6 +51920,54 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1629050884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1629050886}
+  - component: {fileID: 1629050885}
+  m_Layer: 0
+  m_Name: MusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1629050885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629050884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd0b1d50ac3c40444a40ba8dcfa06961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainTheme: {fileID: 8300000, guid: 308ae344ceb537c45b2dd48da515b46e, type: 3}
+  corruptedTheme: {fileID: 8300000, guid: 4098f7b3b82dd7f44ad587c83fde3725, type: 3}
+  hospitalBeep: {fileID: 8300000, guid: f117f3b7feb6a924389e4c5dae8beef6, type: 3}
+  flatline: {fileID: 8300000, guid: f842a3bb14c4ec946b104e400bfb12cd, type: 3}
+--- !u!4 &1629050886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629050884}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.7330464, y: -0.40132704, z: 0.013254055}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1630596465 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1673679701154645469, guid: f6fafed21306f464c89085636a6b60e6, type: 3}
@@ -52874,6 +52924,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 322473594}
   maxTime: 300
+  gameOverManager: {fileID: 0}
+  musicManager: {fileID: 0}
 --- !u!4 &1719975255
 Transform:
   m_ObjectHideFlags: 0
@@ -56156,3 +56208,4 @@ SceneRoots:
   - {fileID: 740323938}
   - {fileID: 840015881}
   - {fileID: 1719975255}
+  - {fileID: 1629050886}
