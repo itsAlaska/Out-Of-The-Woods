@@ -7,15 +7,18 @@ public class CorruptionEffect : MonoBehaviour
     [Header("Post-Processing")]
     [SerializeField] private Volume corruptionVolume;
     [SerializeField] private float corruptionDuration = 300f;
+    [SerializeField] private float corruptionStartTime = 90f; // 1:30 in seconds
 
     private float timer;
     private bool isLocked = false;
+    private LayeredMusicManager musicManager;
 
     private ColorAdjustments colorAdjustments;
     private Vignette vignette;
 
     private void Start()
     {
+        musicManager = FindObjectOfType<LayeredMusicManager>();
         if (corruptionVolume != null)
         {
             corruptionVolume.profile.TryGet(out colorAdjustments);
@@ -29,22 +32,38 @@ public class CorruptionEffect : MonoBehaviour
             return;
 
         timer += Time.unscaledDeltaTime;
-        float t = Mathf.Clamp01(timer / corruptionDuration);
-        Debug.Log($"Corruption Progress: {t}");
+
+        if (timer < corruptionStartTime)
+            return;
+
+        float rawT = Mathf.Clamp01((timer - corruptionStartTime) / (corruptionDuration - corruptionStartTime));
+        float easedT = Mathf.SmoothStep(0f, 1f, rawT);
+        Debug.Log($"Corruption Progress: {easedT}");
+
+        musicManager?.SetCorruptionProgress(easedT);
 
         if (colorAdjustments != null)
         {
-            colorAdjustments.saturation.value = Mathf.Lerp(0f, -80f, t);
-            colorAdjustments.contrast.value = Mathf.Lerp(0f, 30f, t);
+            colorAdjustments.saturation.value = Mathf.Lerp(0f, -80f, easedT);
+            colorAdjustments.contrast.value = Mathf.Lerp(0f, 30f, easedT);
         }
 
         if (vignette != null)
         {
-            vignette.intensity.value = Mathf.Lerp(0f, 1f, t);
-            vignette.smoothness.value = Mathf.Lerp(0.4f, 1f, t);
+            vignette.intensity.value = Mathf.Lerp(0f, 1f, easedT);
+            vignette.smoothness.value = Mathf.Lerp(0.4f, 1f, easedT);
             vignette.rounded.value = false;
         }
+
+        // Fade in hospital beep starting at 4:30 (270s)
+        if (timer >= 270f && musicManager != null)
+        {
+            float beepFadeT = Mathf.Clamp01((timer - 270f) / 30f);
+            musicManager.SetHospitalBeepVolume(beepFadeT);
+        }
     }
+
+
 
     public void LockCorruptionToMax()
     {

@@ -40,8 +40,20 @@ public class UpgradeManager : MonoBehaviour
     public void SelectUpgrade(UpgradeData data)
     {
         playerStats.ApplyStatModifier(data.statToModify, data.value);
+
+        if (data.statToModify == "Health")
+        {
+            PlayerHealth health = playerStats.GetComponent<PlayerHealth>();
+            if (health != null)
+            {
+                int healAmount = Mathf.RoundToInt(health.GetMaxHealth());
+                health.Heal(healAmount);
+            }
+        }
+
         upgradePanel.SetActive(false);
         GameOverManager.SetExternalPause(false); 
         Time.timeScale = 1f;
     }
+
 }

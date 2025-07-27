@@ -42,11 +42,42 @@ public class LayeredMusicManager : MonoBehaviour
     }
 
     // Gradually blend from main to corrupted based on corruption % (0 to 1)
-    public void SetCorruptionProgress(float t)
+    public void SetCorruptionProgress(float timeElapsed)
     {
-        mainSource.volume = 1f - t;
-        corruptedSource.volume = t;
+        float mainVolume = 0f;
+        float corruptedVolume = 0f;
+        float beepVolume = 0f;
+
+        if (timeElapsed < 90f)
+        {
+            // 0:00–1:30
+            mainVolume = 1f;
+        }
+        else if (timeElapsed < 270f)
+        {
+            // 1:30–4:30
+            float t = Mathf.InverseLerp(90f, 270f, timeElapsed);
+            mainVolume = Mathf.Lerp(1f, 0f, t);
+            corruptedVolume = Mathf.Lerp(0f, 1f, t);
+        }
+        else if (timeElapsed < 300f)
+        {
+            // 4:30–5:00
+            float t = Mathf.InverseLerp(270f, 300f, timeElapsed);
+            corruptedVolume = Mathf.Lerp(1f, 0f, t);
+            beepVolume = Mathf.Lerp(0f, 0.5f, t);
+        }
+        else
+        {
+            // After 5:00
+            beepVolume = 0f;
+        }
+
+        mainSource.volume = mainVolume;
+        corruptedSource.volume = corruptedVolume;
+        sfxSource.volume = beepVolume;
     }
+
 
     // When timer hits 5 minutes: fade out music, trigger flatline sfx
     public void TriggerFlatline()
@@ -62,6 +93,18 @@ public class LayeredMusicManager : MonoBehaviour
     {
         StartCoroutine(FadeOutSource(mainSource));
         StartCoroutine(FadeOutSource(corruptedSource));
+    }
+    
+    public void SetHospitalBeepVolume(float t)
+    {
+        if (sfxSource.clip != hospitalBeep)
+        {
+            sfxSource.clip = hospitalBeep;
+            sfxSource.loop = true;
+            sfxSource.Play();
+        }
+
+        sfxSource.volume = Mathf.Lerp(0f, 1f, t);
     }
 
     private IEnumerator FadeOutSource(AudioSource source)

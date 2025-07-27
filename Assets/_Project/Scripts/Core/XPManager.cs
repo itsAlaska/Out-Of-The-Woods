@@ -30,10 +30,18 @@ public class XPManager : MonoBehaviour
     {
         if (!FindObjectOfType<UpgradeManager>())
             Debug.LogWarning("No UpgradeManager found in scene!");
-        
+
         level++;
         xpToNextLevel = Mathf.RoundToInt(xpToNextLevel * xpGrowthFactor);
         Debug.Log($"Level Up! Now level {level}");
+
+        // Heal 20% of max health on level up
+        PlayerHealth health = FindObjectOfType<PlayerHealth>();
+        if (health != null)
+        {
+            int healAmount = Mathf.RoundToInt(health.GetMaxHealth());
+            health.Heal(healAmount);
+        }
 
         FindObjectOfType<UpgradeManager>()?.ShowUpgradeChoices();
     }

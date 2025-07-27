@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    public float maxHealth = 100f;
+    public float maxHealth = 10f;
     public float moveSpeed = 5f;
     public float projectileDamage = 10f;
     public float projectileSpeed = 10f;
