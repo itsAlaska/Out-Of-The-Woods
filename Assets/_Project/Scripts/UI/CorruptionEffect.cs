@@ -25,7 +25,8 @@ public class CorruptionEffect : MonoBehaviour
 
     private void Update()
     {
-        if (isLocked || corruptionVolume == null) return;
+        if (isLocked || corruptionVolume == null || GameOverManager.IsExternallyPaused)
+            return;
 
         timer += Time.unscaledDeltaTime;
         float t = Mathf.Clamp01(timer / corruptionDuration);
@@ -39,9 +40,9 @@ public class CorruptionEffect : MonoBehaviour
 
         if (vignette != null)
         {
-            vignette.intensity.value = Mathf.Lerp(0f, 1f, t);        // Full screen blackout
-            vignette.smoothness.value = Mathf.Lerp(0.4f, 1f, t);     // Sharper edges over time
-            vignette.rounded.value = false;                          // More cinematic (optional)
+            vignette.intensity.value = Mathf.Lerp(0f, 1f, t);
+            vignette.smoothness.value = Mathf.Lerp(0.4f, 1f, t);
+            vignette.rounded.value = false;
         }
     }
 

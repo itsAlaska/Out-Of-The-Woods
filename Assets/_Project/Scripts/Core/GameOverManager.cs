@@ -12,6 +12,7 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private GameTimer gameTimer;
 
     private bool isGameOver = false;
+    public static bool IsExternallyPaused { get; private set; } = false;
 
     private void Awake()
     {
@@ -68,5 +69,10 @@ public class GameOverManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
+    public static void SetExternalPause(bool isPaused)
+    {
+        IsExternallyPaused = isPaused;
     }
 }

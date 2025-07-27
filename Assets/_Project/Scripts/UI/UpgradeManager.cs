@@ -18,6 +18,7 @@ public class UpgradeManager : MonoBehaviour
     public void ShowUpgradeChoices()
     {
         Time.timeScale = 0f;
+        GameOverManager.SetExternalPause(true); 
         upgradePanel.SetActive(true);
 
         // Randomly pick upgrades
@@ -40,6 +41,7 @@ public class UpgradeManager : MonoBehaviour
     {
         playerStats.ApplyStatModifier(data.statToModify, data.value);
         upgradePanel.SetActive(false);
+        GameOverManager.SetExternalPause(false); 
         Time.timeScale = 1f;
     }
 }
